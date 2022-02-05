@@ -4,8 +4,11 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
+const cors = require('cors')
+
 const app = express()
 app.use(express.json())
+app.use(cors())
 
 // importando modelo de usuario
 const User = require('./models/User')
