@@ -4,7 +4,7 @@
         <Input @custom-change="this.email = $event" type="email" input="E-mail"/>
         <br>
         <Input @custom-change="this.senha = $event" type="password" input="Senha"/>
-        <Button @click="teste" msg="Login" />
+        <Button @click="logar" msg="Login" />
         <p class="no-acc-txt">Não possui uma conta?</p>
         <router-link to="/register"><p class="new-acc-txt">Criar uma nova conta</p></router-link>
     </div>
@@ -27,8 +27,30 @@ export default {
         }
     },
     methods: {
-        async teste(e) {
-            console.log(this.email, this.senha);
+        async logar() {
+            const data = {
+                email: this.email,
+                senha: this.senha
+            }
+
+            const dataJson = JSON.stringify(data)
+
+            const req = await fetch('http://localhost:3000/login', {
+                method: 'POST',
+                headers: {'Content-type': 'application/json'},
+                body: dataJson
+            })
+
+            const res = await req.json()
+
+            if(!res.ok){
+                console.log('erro ao fazer o login');
+                console.log(res.mensagem);
+            }else {
+                localStorage.setItem('token', res.token)
+                console.log('logado com sucesso!');
+                this.$router.push(`home`)
+            }
         }
     }
 }

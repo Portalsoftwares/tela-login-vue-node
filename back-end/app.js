@@ -13,27 +13,69 @@ app.use(cors())
 // importando modelo de usuario
 const User = require('./models/User')
 
-
 // teste 
 app.get('/', (req, res) => {
     res.status(200).json({message: "deu certoooooooooo"})
 })
+
+
+// rota para autenticação
+app.post('/autenticar', checkToken, async (req, res) =>{
+    const id = req.params.id
+
+    // checar se o usuario existe
+    const user = await User.findById(id, '-password')
+
+    if(!user){
+        return res.status(404).json({message: "Usuário não encontrado", ok: false})
+    }
+    
+    res.status(200).json({user, ok: true})
+
+})
+
+
+// funcao para checar o token
+function checkToken(req, res, next) {
+    const authHeader = req.headers['autorization']
+    const token = authHeader && authHeader.split(" ")[1]
+
+    if(!token){
+        return res.status(401).json({mensagem: 'Acesso negado!', ok: false})
+    }
+
+    try {
+        const secret = process.env.SECRET
+
+        jwt.verify(token, secret)
+
+        next()
+
+    } catch (error) {
+        res.status(400).json({mensagem: 'Token inválido', ok: false})
+    }
+
+
+
+}
+
+
 // registro
 app.post('/registrar', async (req, res) =>{
     const {nome, email, senha, confirmasenha} = req.body
 
     // validação dos campos
     if(!nome){
-        return res.status(422).json({mensagem: 'O nome é obrigatório!'})
+        return res.status(422).json({mensagem: 'O nome é obrigatório!', ok: false})
     }
     if(!email){
-        return res.status(422).json({mensagem: 'O email é obrigatório!'})
+        return res.status(422).json({mensagem: 'O email é obrigatório!', ok: false})
     }
     if(!senha){
-        return res.status(422).json({mensagem: 'A senha é obrigatória!'})
+        return res.status(422).json({mensagem: 'A senha é obrigatória!', ok: false})
     }
     if(senha !== confirmasenha){
-        return res.status(422).json({mensagem: 'As senhas não conferem!'})
+        return res.status(422).json({mensagem: 'As senhas não conferem!', ok: false})
     }
 
 
@@ -41,7 +83,7 @@ app.post('/registrar', async (req, res) =>{
     const userExist = await User.findOne({email: email})
 
     if(userExist){
-        return res.status(422).json({mensagem: 'Email ja registrado!'})
+        return res.status(422).json({mensagem: 'Email ja registrado!', ok: false})
     }
 
     // criar a senha
@@ -58,11 +100,11 @@ app.post('/registrar', async (req, res) =>{
     try {
         await user.save()
 
-        res.status(201).json({mensagem: "Usuário criado com sucesso!"})
+        res.status(201).json({mensagem: "Usuário criado com sucesso!", ok: true})
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({mensagem: "Ocorreu um erro com o servidor, por favor, tente novamente mais tarde!"})
+        res.status(500).json({mensagem: "Ocorreu um erro com o servidor, por favor, tente novamente mais tarde!", ok: false})
     }
 
 
@@ -74,24 +116,24 @@ app.post('/login', async (req, res) => {
 
     // validacao
     if(!email){
-        return res.status(422).json({mensagem: 'O email é obrigatório!'})
+        return res.status(422).json({mensagem: 'O email é obrigatório!', ok: false})
     }
     if(!senha){
-        return res.status(422).json({mensagem: 'A senha é obrigatória!'})
+        return res.status(422).json({mensagem: 'A senha é obrigatória!', ok: false})
     }
 
     // checar se o usuário existe
     const user = await User.findOne({email: email})
 
     if(!user){
-        return res.status(422).json({mensagem: "Usuário não encontrado!"})
+        return res.status(422).json({mensagem: "Usuário não encontrado!", ok: false})
     }
 
     // checar se a senha confere
     const senhaCheck = await bcrypt.compare(senha, user.senha)
 
     if(!senhaCheck){
-        return res.status(422).json({mensagem: 'Senha inválida!'})
+        return res.status(422).json({mensagem: 'Senha inválida!', ok: false})
     }
 
     try {
@@ -102,12 +144,12 @@ app.post('/login', async (req, res) => {
             id: user._id
         }, secret)
 
-        res.status(200).json({mensagem: "Autenticação realizada com sucesso!", token})
+        res.status(200).json({mensagem: "Autenticação realizada com sucesso!", token, ok: true})
 
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({mensagem: 'Ocorreu um erro com o servidor, por favor, tente novamente mais tarde!'})
+        res.status(500).json({mensagem: 'Ocorreu um erro com o servidor, por favor, tente novamente mais tarde!', ok: false})
     }
 
 

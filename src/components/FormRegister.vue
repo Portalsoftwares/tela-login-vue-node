@@ -7,9 +7,9 @@
         <br>
         <Input @custom-change="this.senha = $event" type="password" input="Senha"/>
         <br>
-        <Input @custom-change="this.confirmarsenha = $event" type="password" input="Confirmar Senha"/>
+        <Input @custom-change="this.confirmasenha = $event" type="password" input="Confirmar Senha"/>
         <br>
-        <Button @click="teste" msg="Criar"/>
+        <Button @click="cadastrar" msg="Criar"/>
         <p class="no-acc-txt">Já possui uma conta?</p>
         <router-link to="/"><p class="new-acc-txt">Entrar com uma conta existente</p></router-link>
     </div>
@@ -30,12 +30,38 @@ export default {
             email: null,
             nome: null,
             senha: null,
-            confirmarsenha: null
+            confirmasenha: null
         }
     },
     methods: {
-        async teste() {
-            console.log(this.email, this.nome, this.senha, this.confirmarsenha);
+        async cadastrar() {
+            const data = {
+                email: this.email,
+                nome: this.nome,
+                senha: this.senha,
+                confirmasenha: this.confirmasenha
+            }
+
+            const dataJson = JSON.stringify(data)
+
+            const req = await fetch('http://localhost:3000/registrar', {
+                method: 'POST',
+                headers: {'Content-type': 'application/json'},
+                body: dataJson
+            })
+
+            const res = await req.json()
+            
+            if(!res.ok){
+                console.log('Algo deu errado!');
+                console.log(res.mensagem);
+            } else {
+                console.log(res.mensagem);
+                console.log('Redirecionando para a página de login!');
+                setInterval(() => {
+                    this.$router.push('/')
+                }, 3000)
+            }
         }
     }
 }
