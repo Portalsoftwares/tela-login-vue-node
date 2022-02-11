@@ -58,9 +58,7 @@ export default {
             } else {
                 console.log(res.mensagem);
                 console.log('Redirecionando para a página de login!');
-                setInterval(() => {
-                    this.$router.push('/')
-                }, 3000)
+                this.$router.push('/')
             }
         }
     }

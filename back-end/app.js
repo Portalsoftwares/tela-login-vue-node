@@ -3,6 +3,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const session = require('session')
 
 const cors = require('cors')
 
@@ -20,8 +21,12 @@ app.get('/', (req, res) => {
 
 
 // rota para autenticação
-app.post('/autenticar', checkToken, async (req, res) =>{
+app.get('/autenticar/:id', checkToken, async (req, res) =>{
     const id = req.params.id
+
+    if(id === "0"){
+        return res.status(401).json({mensagem: 'Acesso negado!', ok: false})
+    }
 
     // checar se o usuario existe
     const user = await User.findById(id, '-password')
@@ -37,7 +42,7 @@ app.post('/autenticar', checkToken, async (req, res) =>{
 
 // funcao para checar o token
 function checkToken(req, res, next) {
-    const authHeader = req.headers['autorization']
+    const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(" ")[1]
 
     if(!token){
@@ -144,7 +149,7 @@ app.post('/login', async (req, res) => {
             id: user._id
         }, secret)
 
-        res.status(200).json({mensagem: "Autenticação realizada com sucesso!", token, ok: true})
+        res.status(200).json({mensagem: "Autenticação realizada com sucesso!", token, ok: true, id: user._id})
 
 
     } catch (error) {

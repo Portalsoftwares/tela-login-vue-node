@@ -49,7 +49,12 @@ export default {
             }else {
                 localStorage.setItem('token', res.token)
                 console.log('logado com sucesso!');
-                this.$router.push(`home`)
+                this.$router.push({ 
+                    name: 'Home', 
+                    params: { 
+                        user_id: res.id
+                    }
+                })
             }
         }
     }
