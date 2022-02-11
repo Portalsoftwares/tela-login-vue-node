@@ -47,14 +47,10 @@ export default {
                 console.log('erro ao fazer o login');
                 console.log(res.mensagem);
             }else {
-                localStorage.setItem('token', res.token)
+                document.cookie = `token=${res.token}`
+                document.cookie = `id=${res.id}`
                 console.log('logado com sucesso!');
-                this.$router.push({ 
-                    name: 'Home', 
-                    params: { 
-                        user_id: res.id
-                    }
-                })
+                this.$router.push('home')
             }
         }
     }

@@ -3,9 +3,19 @@ const express = require('express')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const session = require('session')
-
 const cors = require('cors')
+
+// conexao com o banco
+const dbUser = process.env.DB_USER
+const dbPassword = process.env.DB_PASSWORD
+const mongoDBUrl = `mongodb+srv://${dbUser}:${dbPassword}@apicluster.kbp4k.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
+mongoose.connect(mongoDBUrl)
+.then(() => {
+    app.listen(3000)
+    console.log('Conectou ao banco!');
+}).catch((err) =>{
+    console.log(err);
+})
 
 const app = express()
 app.use(express.json())
@@ -14,17 +24,17 @@ app.use(cors())
 // importando modelo de usuario
 const User = require('./models/User')
 
-// teste 
+
+// rota de teste 
 app.get('/', (req, res) => {
-    res.status(200).json({message: "deu certoooooooooo"})
+    res.status(200).json({message: "deu certo"})
 })
 
-
 // rota para autenticação
-app.get('/autenticar/:id', checkToken, async (req, res) =>{
+app.get('/home/:id', checkToken, async (req, res) =>{
     const id = req.params.id
 
-    if(id === "0"){
+    if(id == "null"){
         return res.status(401).json({mensagem: 'Acesso negado!', ok: false})
     }
 
@@ -39,29 +49,21 @@ app.get('/autenticar/:id', checkToken, async (req, res) =>{
 
 })
 
-
 // funcao para checar o token
 function checkToken(req, res, next) {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(" ")[1]
-
     if(!token){
         return res.status(401).json({mensagem: 'Acesso negado!', ok: false})
     }
 
     try {
         const secret = process.env.SECRET
-
         jwt.verify(token, secret)
-
         next()
-
     } catch (error) {
         res.status(400).json({mensagem: 'Token inválido', ok: false})
     }
-
-
-
 }
 
 
@@ -117,6 +119,7 @@ app.post('/registrar', async (req, res) =>{
 
 // login
 app.post('/login', async (req, res) => {
+
     const {email, senha} = req.body
 
     // validacao
@@ -140,40 +143,18 @@ app.post('/login', async (req, res) => {
     if(!senhaCheck){
         return res.status(422).json({mensagem: 'Senha inválida!', ok: false})
     }
-
-    try {
-        
+    
+    
+    try {        
         const secret = process.env.SECRET
-
+        
         const token = jwt.sign({
             id: user._id
         }, secret)
-
         res.status(200).json({mensagem: "Autenticação realizada com sucesso!", token, ok: true, id: user._id})
-
 
     } catch (error) {
         console.log(error);
         res.status(500).json({mensagem: 'Ocorreu um erro com o servidor, por favor, tente novamente mais tarde!', ok: false})
     }
-
-
-
-
-})
-
-
-
-
-
-// conexao com o banco
-const dbUser = process.env.DB_USER
-const dbPassword = process.env.DB_PASSWORD
-
-mongoose.connect(`mongodb+srv://${dbUser}:${dbPassword}@apicluster.kbp4k.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`)
-.then(() => {
-    app.listen(3000)
-    console.log('Conectou ao banco!');
-}).catch((err) =>{
-    console.log(err);
 })
