@@ -1,5 +1,5 @@
 <template>
-  <div id="home">
+  <div id="container_principal">
     <FormRegister />
   </div>
 </template>

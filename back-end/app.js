@@ -5,17 +5,6 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const cors = require('cors')
 
-// conexao com o banco
-const dbUser = process.env.DB_USER
-const dbPassword = process.env.DB_PASSWORD
-const mongoDBUrl = `mongodb+srv://${dbUser}:${dbPassword}@apicluster.kbp4k.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
-mongoose.connect(mongoDBUrl)
-.then(() => {
-    app.listen(3000)
-    console.log('Conectou ao banco!');
-}).catch((err) =>{
-    console.log(err);
-})
 
 const app = express()
 app.use(express.json())
@@ -158,3 +147,16 @@ app.post('/login', async (req, res) => {
         res.status(500).json({mensagem: 'Ocorreu um erro com o servidor, por favor, tente novamente mais tarde!', ok: false})
     }
 })
+
+// conexao com o banco
+const dbUser = process.env.DB_USER
+const dbPassword = process.env.DB_PASSWORD
+const mongoDBUrl = `mongodb+srv://${dbUser}:${dbPassword}@apicluster.kbp4k.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
+mongoose.connect(mongoDBUrl)
+.then(() => {
+    console.log('Conectou ao banco!');
+}).catch((err) =>{
+    console.log(err);
+})
+
+app.listen(8081, () => console.log('Servidor aberto! http://localhost:8081'))

@@ -66,9 +66,12 @@ export default {
 </script>
 
 <style scoped>
-    #form-bg{
-        width: 500px;
-        height: 500px;
-    }
+#form-bg{
+    width: min(450px, 90vw);
+    height: 500px;
+}
+h1{
+    font-size: max(24px, 2.3vw);
+}
 </style>
 

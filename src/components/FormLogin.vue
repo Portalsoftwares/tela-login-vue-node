@@ -64,8 +64,8 @@ export default {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        width: 400px;
-        height: 400px;
+        width: min(450px, 90vw);
+        height: 50%;
         border-radius: 20px;
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
         color: rgb(0, 0, 0);

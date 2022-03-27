@@ -1,5 +1,5 @@
 <template>
-  <div id="home">
+  <div id="container_principal">
     <FormLogin />
   </div>
 </template>
@@ -16,12 +16,4 @@ export default {
 </script>
 
 <style>
-  #home{
-    background-color: #0D3140;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
 </style>

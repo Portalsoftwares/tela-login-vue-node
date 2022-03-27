@@ -1,6 +1,6 @@
 <template>
     <label for="inp" class="inp">
-        <input @change='$emit("customChange", $event.target.value)' :type="type" id="inp" placeholder="&nbsp;">
+        <input @change='$emit("customChange", $event.target.value)' :type="type" class="inp" placeholder="&nbsp;">
         <span class="label">{{input}}</span>
         <span class="focus-bg"></span>
     </label>
