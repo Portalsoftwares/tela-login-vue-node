@@ -1,19 +1,24 @@
 <template>
-    <label for="inp" class="inp">
-        <input @change='$emit("customChange", $event.target.value)' :type="type" class="inp" placeholder="&nbsp;">
-        <span class="label">{{input}}</span>
-        <span class="focus-bg"></span>
-    </label>
+  <label for="inp" class="inp">
+    <input
+      @change="$emit('customChange', $event.target.value)"
+      :type="type"
+      class="inp"
+      placeholder="&nbsp;"
+    />
+    <span class="label">{{ input }}</span>
+    <span class="focus-bg"></span>
+  </label>
 </template>
 
 <script>
 export default {
   name: "Input",
   props: {
-      input: String,
-      type: String
-  }
-}
+    input: String,
+    type: String,
+  },
+};
 </script>
 
 <style scoped>
@@ -50,7 +55,7 @@ export default {
 .inp input {
   -webkit-appearance: none;
   -moz-appearance: none;
-       appearance: none;
+  appearance: none;
   width: 100%;
   border: 0;
   font-family: inherit;
@@ -82,7 +87,7 @@ export default {
 .inp input:focus {
   background: rgba(255, 3, 3, 0.05);
   outline: none;
-  box-shadow: inset 0 -2px 0 #0077FF;
+  box-shadow: inset 0 -2px 0 #0077ff;
 }
 .inp input:focus + .label {
   color: white;
