@@ -1,6 +1,6 @@
 <template>
   <div id="form-bg">
-    <h1>Criar uma nova conta</h1>
+    <h1>Crie uma nova conta!</h1>
     <Input @custom-change="this.nome = $event" type="text" input="Nome" />
     <br />
     <Input @custom-change="this.email = $event" type="email" input="E-mail" />

@@ -33,7 +33,7 @@ export default {
   position: absolute;
   top: 20px;
   left: 12px;
-  font-size: 16px;
+  font-size: 14px;
   color: rgb(0, 0, 0);
   font-weight: 500;
   transform-origin: 0 0;
@@ -63,7 +63,7 @@ export default {
   height: 56px;
   font-size: 16px;
   font-weight: 400;
-  background: rgba(0, 0, 0, 0.02);
+  background: rgba(0, 0, 0, 0);
   box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.3);
   color: white;
   transition: all 0.15s ease;

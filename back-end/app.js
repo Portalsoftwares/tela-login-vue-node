@@ -43,7 +43,7 @@ app.post('/registrar', async (req, res) => {
     return res.status(422).json({ mensagem: 'O nome é obrigatório!', ok: false })
   }
   if (!email) {
-    return res.status(422).json({ mensagem: 'O email é obrigatório!', ok: false })
+    return res.status(422).json({ mensagem: 'O e-mail é obrigatório!', ok: false })
   }
   if (!senha) {
     return res.status(422).json({ mensagem: 'A senha é obrigatória!', ok: false })
@@ -57,7 +57,7 @@ app.post('/registrar', async (req, res) => {
   const userExist = await User.findOne({ email: email })
 
   if (userExist) {
-    return res.status(422).json({ mensagem: 'Email ja registrado!', ok: false })
+    return res.status(422).json({ mensagem: 'E-mail ja registrado!', ok: false })
   }
 
   // criar a senha
@@ -91,7 +91,7 @@ app.post('/login', async (req, res) => {
 
   // validacao
   if (!email) {
-    return res.status(422).json({ mensagem: 'O email é obrigatório!', ok: false })
+    return res.status(422).json({ mensagem: 'O e-mail é obrigatório!', ok: false })
   }
   if (!senha) {
     return res.status(422).json({ mensagem: 'A senha é obrigatória!', ok: false })
