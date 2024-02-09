@@ -33,7 +33,7 @@ export default {
     };
   },
   methods: {
-    async logar() {
+     logar() {
       const data = {
         email: this.email,
         senha: this.senha,
@@ -41,17 +41,19 @@ export default {
 
       const dataJson = JSON.stringify(data);
 
-      const req = await fetch(`${process.env.VUE_APP_API_URL}login`, {
-        method: "POST",
-        headers: { "Content-type": "application/json" },
-        body: dataJson,
+      const req =  fetch(`${process.env.VUE_APP_API_URL}users`, {
+        method: "GET",
+        headers: { "Content-type": "application/json" } //,         body: dataJson,
       });
 
-      const res = await req.json();
-
+      const res = JSON.stringify(req);
+      
       if (!res.ok) {
-        console.log(res.mensagem);
-        this.msg = res.mensagem
+        console.log(res);
+        this.msg =  'usuário ou senha inválidos!';
+
+        this.$router.push("home");
+
       } else {
         console.log("logado com sucesso!");
         this.$router.push("home");

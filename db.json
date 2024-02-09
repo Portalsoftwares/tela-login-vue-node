@@ -1,0 +1,40 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  },
+
+  "users": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "johndoe@hot.com",
+      "password": "123456",
+      "role": "admin",
+      "status": "active",
+      "created_at": "2019-01-01 00:00:00"
+    },
+    {
+      "id": 2,
+      "name": "Jane Doe",
+      "email": "janedoe@hot.com",
+      "password": "123456",
+      "role": "user",
+      "status": "active",
+      "created_at": "2019-01-01 00:00:00"
+    }
+  ]
+}
